@@ -1,4 +1,4 @@
-name = "captcha-game"
+name = "captchas"
 main = "worker.ts"
 compatibility_date = "2023-01-01"
 

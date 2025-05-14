@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useGameState } from '../../store/GameContext'
 import { motion } from 'framer-motion'
 import TextCaptcha from '../captchas/TextCaptcha'
@@ -36,9 +36,10 @@ const GameBoard: React.FC = () => {
     }
   }, [state.currentCaptcha, dispatch])
   
-  const handleSolution = (solution: string) => {
+  const handleSolution = useCallback((solution: string) => {
+    console.log('Solution received:', solution)
     setUserSolution(solution)
-  }
+  }, [])
   
   const handleSubmit = () => {
     if (timerRef.current) {

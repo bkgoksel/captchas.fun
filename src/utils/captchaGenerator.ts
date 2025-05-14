@@ -87,16 +87,44 @@ const generateMathProblem = (difficulty: number): { problem: string, solution: s
   }
 }
 
-// Generate image selection data (placeholder - in real app would use actual images)
+// Generate image selection data with real fire hydrant images
 const generateImageSelection = (difficulty: number): { images: string[], correctIndex: number } => {
-  // This is a placeholder. In a real implementation, you would have actual image URLs or base64 data
-  const imageCount = 4 + Math.min(Math.floor(difficulty / 2), 5)
-  const images = Array(imageCount).fill(null).map((_, i) => `image-${i}`)
-  const correctIndex = Math.floor(Math.random() * imageCount)
+  // Use the actual image names from our fire_hydrant_captcha folder
+  const allImages = [
+    'fire_hydrant', 
+    'car', 
+    'lamp', 
+    'man', 
+    'nut', 
+    'stick', 
+    'tree', 
+    'weird', 
+    'abstract'
+  ]
+  
+  // Fire hydrant is always the target
+  const targetImage = 'fire_hydrant'
+  
+  // Shuffle the non-target images
+  const shuffledImages = [...allImages.filter(img => img !== targetImage)]
+    .sort(() => Math.random() - 0.5)
+  
+  // Always use 8 non-target images (total of 9 with target)
+  // If we have fewer than 8 non-target images, repeat some of them
+  let nonTargetImages = []
+  while (nonTargetImages.length < 8) {
+    nonTargetImages = nonTargetImages.concat(shuffledImages)
+  }
+  nonTargetImages = nonTargetImages.slice(0, 8)
+  
+  // Insert the target image at a random position
+  const randomPosition = Math.floor(Math.random() * 9)
+  const finalImages = [...nonTargetImages]
+  finalImages.splice(randomPosition, 0, targetImage)
   
   return {
-    images,
-    correctIndex
+    images: finalImages,
+    correctIndex: randomPosition
   }
 }
 
@@ -193,7 +221,7 @@ export const generateCaptcha = (level: number, availableTypes: CaptchaType[]): C
       const imageSelection = generateImageSelection(level)
       data = {
         images: imageSelection.images,
-        prompt: 'Select the correct image'
+        prompt: 'Fire Hydrant'
       }
       solution = imageSelection.correctIndex.toString()
       break

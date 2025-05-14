@@ -12,16 +12,18 @@ const GameBoard: React.FC = () => {
   const [userSolution, setUserSolution] = useState<string>('')
   const [timeLeft, setTimeLeft] = useState<number>(state.currentCaptcha?.timeLimit || 30)
   const [startTime, setStartTime] = useState<number>(Date.now())
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const timerRef = useRef<number | null>(null)
   
   useEffect(() => {
     setStartTime(Date.now())
     
     // Start timer
-    timerRef.current = setInterval(() => {
+    timerRef.current = window.setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          clearInterval(timerRef.current!)
+          if (timerRef.current !== null) {
+            window.clearInterval(timerRef.current)
+          }
           dispatch({ type: 'FAIL_CAPTCHA' })
           return 0
         }
@@ -30,8 +32,8 @@ const GameBoard: React.FC = () => {
     }, 1000)
     
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
+      if (timerRef.current !== null) {
+        window.clearInterval(timerRef.current)
       }
     }
   }, [state.currentCaptcha, dispatch])
@@ -42,8 +44,8 @@ const GameBoard: React.FC = () => {
   }, [])
   
   const handleSubmit = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current)
+    if (timerRef.current !== null) {
+      window.clearInterval(timerRef.current)
     }
     
     const timeSpent = (Date.now() - startTime) / 1000

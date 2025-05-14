@@ -111,7 +111,7 @@ const generateImageSelection = (difficulty: number): { images: string[], correct
   
   // Always use 8 non-target images (total of 9 with target)
   // If we have fewer than 8 non-target images, repeat some of them
-  let nonTargetImages = []
+  let nonTargetImages: string[] = []
   while (nonTargetImages.length < 8) {
     nonTargetImages = nonTargetImages.concat(shuffledImages)
   }

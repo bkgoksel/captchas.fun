@@ -59,6 +59,37 @@ yarn build
 
 The build artifacts will be stored in the `dist/` directory.
 
+## Deploying to Cloudflare Workers
+
+This project can be deployed to Cloudflare Workers. First, make sure you have Cloudflare CLI (Wrangler) installed:
+
+```bash
+npm install -D wrangler @cloudflare/workers-types @cloudflare/kv-asset-handler
+```
+
+Then, you can deploy using:
+
+```bash
+npm run deploy
+```
+
+This will build the project and deploy it to Cloudflare Workers. If this is your first deployment, you'll be prompted to log in to your Cloudflare account.
+
+### Configuration
+
+The deployment configuration is defined in `wrangler.toml`:
+
+```toml
+name = "captcha-game"
+main = "worker.ts"
+compatibility_date = "2023-01-01"
+
+[site]
+bucket = "./dist"
+```
+
+You may want to customize the `name` field to match your preferred project name in Cloudflare.
+
 ## Game Instructions
 
 1. **Objective**: Solve the CAPTCHA puzzles within the time limit to earn points and advance to higher levels.

@@ -1,0 +1,6 @@
+name = "captcha-game"
+main = "worker.ts"
+compatibility_date = "2023-01-01"
+
+[site]
+bucket = "./dist"
